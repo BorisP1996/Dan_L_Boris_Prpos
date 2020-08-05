@@ -35,7 +35,19 @@ namespace Zadatak_1.ViewModel
                 OnPropertyChanged("Song");
             }
         }
-
+        private bool update;
+        public bool Update
+        {
+            get
+            {
+                return update;
+            }
+            set
+            {
+                update = value;
+                OnPropertyChanged("Update");
+            }
+        }
         private ICommand add;
         public ICommand Add
         {
@@ -60,6 +72,7 @@ namespace Zadatak_1.ViewModel
                 context.SaveChanges();
                 MessageBox.Show("Song is saved in databse");
                 Song = new tblSong();
+                Update = true;
             }
             catch (Exception ex)
             {

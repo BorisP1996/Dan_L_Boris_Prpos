@@ -121,7 +121,7 @@ namespace Zadatak_1.ViewModel
                     MainSongView mainSong = new MainSongView();
                     mainSong.ShowDialog();
                 }
-                if(CheckUsername(Username) == true && PasswordValidation(Password) == true)
+                if(CheckUsername(Username) == true || PasswordValidation(Password) == true)
                 {
                     MessageBox.Show("Username must be unique\nPassword must contain 2 uppercase characters and can't be shorter than 6 characters");
                 }

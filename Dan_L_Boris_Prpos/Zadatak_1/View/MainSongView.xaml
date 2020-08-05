@@ -10,8 +10,8 @@
         <Grid Height="250"
               Width="950">
             <DataGrid Name="DataGridUsers"
-                      ItemsSource="{Binding OrderList, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Order, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding SongList, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Song, UpdateSourceTrigger=PropertyChanged}"
                       IsReadOnly="True"
                       HeadersVisibility="Column"
                       AutoGenerateColumns="False"
@@ -19,14 +19,17 @@
                       BorderBrush="Black"
                       Foreground="Black"
                       FontWeight="Bold"
-                      Margin="210,10,425,49">
+                      Margin="210,10,320,49">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title"
-                                        Binding="{Binding Song.Title}" />
+                                        Width="100"
+                                        Binding="{Binding Title}" />
                     <DataGridTextColumn Header="Author"
-                                        Binding="{Binding Song.Author}" />
+                                        Width="100"
+                                        Binding="{Binding Author}" />
                     <DataGridTextColumn Header="Duration"
-                                        Binding="{Binding Song.Duration}" />
+                                        Width="100"
+                                        Binding="{Binding Duration_s}" />
                     
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>

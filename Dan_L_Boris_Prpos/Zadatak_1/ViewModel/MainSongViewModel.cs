@@ -19,6 +19,7 @@ namespace Zadatak_1.ViewModel
         {
             mainSongView = mainSongOpen;
             Song = new tblSong();
+            SongList = GetSongs();
         }
 
         private tblSong song;
@@ -47,6 +48,50 @@ namespace Zadatak_1.ViewModel
                 OnPropertyChanged("SongList");
             }
         }
+        private ICommand delete;
+        public ICommand Delete
+        {
+            get
+            {
+                if (delete == null)
+                {
+                    delete = new RelayCommand(param => DeleteExecute(), param => CanDeleteExecute());
+                }
+                return delete;
+            }
+
+        }
+        private void DeleteExecute()
+        {
+            try
+            {
+                tblSong songToDelete = (from r in context.tblSongs where r.SongID == Song.SongID select r).FirstOrDefault();
+                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure? Song will be deleted", "Delete Confirmation", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    context.tblSongs.Remove(songToDelete);
+                    context.SaveChanges();
+                    //refreshing list afterwards
+                    SongList = GetSongs();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        private bool CanDeleteExecute()
+        {
+            if (Song==null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         private ICommand add;
         public ICommand Add
         {
@@ -65,6 +110,11 @@ namespace Zadatak_1.ViewModel
             {
                 CreateSong createSong = new CreateSong();
                 createSong.ShowDialog();
+
+                if ((createSong.DataContext as CreateSongViewModel).Update==true)
+                {
+                    SongList = GetSongs();
+                }
             }
             catch (Exception ex)
             {
@@ -95,6 +145,14 @@ namespace Zadatak_1.ViewModel
         private bool CanCloseExecute()
         {
             return true;
+        }
+
+        private List<tblSong> GetSongs()
+        {
+            List<tblSong> list = new List<tblSong>();
+
+            list = context.tblSongs.ToList();
+            return list;
         }
     }
 }
