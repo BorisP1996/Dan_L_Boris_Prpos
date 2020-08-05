@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Zadatak_1.Command;
@@ -98,22 +96,20 @@ namespace Zadatak_1.ViewModel
         }
         private void LoginExecute()
         {
-
-
             try
             {
-
                 tblUser newUser = new tblUser();
                 newUser.Username = Username;
                 newUser.Pasword = Password;
+                //existing user logs in
                 if (UserExist(Username, Password) == true)
                 {
-
                     MessageBox.Show("We recognize you! \nWelcome!");
                     MainSongView mainSong = new MainSongView();
                     mainSong.ShowDialog();
                 }
-                if (CheckUsername(Username)==true && PasswordValidation(Password)==true && UserExist(Username,Password)==false)
+                //new user
+                if (CheckUsername(Username) == true && PasswordValidation(Password) == true && UserExist(Username, Password) == false)
                 {
                     context.tblUsers.Add(newUser);
                     context.SaveChanges();
@@ -121,12 +117,11 @@ namespace Zadatak_1.ViewModel
                     MainSongView mainSong = new MainSongView();
                     mainSong.ShowDialog();
                 }
-                if(CheckUsername(Username) == true || PasswordValidation(Password) == true)
+                //invalid parameters, username must be unique and pass must be 6 char long and contain 2 upper case letters
+                if (CheckUsername(Username) == true || PasswordValidation(Password) == true)
                 {
                     MessageBox.Show("Username must be unique\nPassword must contain 2 uppercase characters and can't be shorter than 6 characters");
                 }
-            
-              
             }
             catch (Exception ex)
             {
@@ -160,7 +155,11 @@ namespace Zadatak_1.ViewModel
                 return true;
             }
         }
-
+        /// <summary>
+        /// Chekcks if username is unique
+        /// </summary>
+        /// <param name="usernameInput"></param>
+        /// <returns></returns>
         private bool CheckUsername(string usernameInput)
         {
             List<tblUser> userList = context.tblUsers.ToList();
@@ -181,6 +180,11 @@ namespace Zadatak_1.ViewModel
                 return true;
             }
         }
+        /// <summary>
+        /// Checks if pass is 6 char long and contains 2 upper case letters
+        /// </summary>
+        /// <param name="paswordInput"></param>
+        /// <returns></returns>
         private bool PasswordValidation(string paswordInput)
         {
             char[] array = paswordInput.ToCharArray();

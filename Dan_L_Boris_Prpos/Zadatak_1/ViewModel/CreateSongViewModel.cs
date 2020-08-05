@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Zadatak_1.Command;
@@ -60,6 +56,9 @@ namespace Zadatak_1.ViewModel
                 return add;
             }
         }
+        /// <summary>
+        /// Saving new song
+        /// </summary>
         private void AddExecute()
         {
             try
@@ -72,6 +71,7 @@ namespace Zadatak_1.ViewModel
                 context.SaveChanges();
                 MessageBox.Show("Song is saved in databse");
                 Song = new tblSong();
+                //sending signal to the list
                 Update = true;
             }
             catch (Exception ex)
@@ -80,6 +80,10 @@ namespace Zadatak_1.ViewModel
                 MessageBox.Show(ex.ToString());
             }
         }
+        /// <summary>
+        /// If field is empty=can not click save button
+        /// </summary>
+        /// <returns></returns>
         private bool CanAddExecute()
         {
             if (String.IsNullOrEmpty(Song.Title) || String.IsNullOrEmpty(Song.Author) || String.IsNullOrEmpty(Song.Duration_s.ToString()) || Song.Duration_s < 0)

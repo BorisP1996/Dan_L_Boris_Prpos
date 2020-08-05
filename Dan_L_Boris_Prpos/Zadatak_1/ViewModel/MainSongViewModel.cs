@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Zadatak_1.Command;
@@ -16,6 +14,7 @@ namespace Zadatak_1.ViewModel
 {
     class MainSongViewModel : ViewModelBase
     {
+        static CountdownEvent countdown = new CountdownEvent(1);
         private readonly BackgroundWorker worker = new BackgroundWorker();
         Entity context = new Entity();
         MainSongView mainSongView;
@@ -65,6 +64,9 @@ namespace Zadatak_1.ViewModel
                 return play;
             }
         }
+        /// <summary>
+        /// click on this button just calls bg worker
+        /// </summary>
         private void PlayExecute()
         {
             try
@@ -85,23 +87,37 @@ namespace Zadatak_1.ViewModel
 
             WriteToFile(Song);
         }
+        /// <summary>
+        /// Method that worker does
+        /// </summary>
+        /// <param name="s"></param>
         private void WriteToFile(tblSong s)
         {
             try
             {
+                //writes data about the song that is parameter
                 string path = @"..\..\file.txt";
                 StreamWriter sw = new StreamWriter(path,true);
                 sw.WriteLine("{0},Reproduction time START:{1}, Duration(s):{2}, Title:{3}", s.SongID, DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"), s.Duration_s, s.Title);
                 sw.Close();
-                MessageBox.Show("Song has started");
-                int counter = 0;
-                Thread.Sleep(1000);
-                counter++;
-                if (counter==s.Duration_s)
+                MessageBox.Show("Title: " + " " + s.Title + " \nAuthor:" + s.Author + " " + "\nSong has started");
+
+                //counting when song if finished =>duration in seconds is deceremnted each second
+                int counter = s.Duration_s.GetValueOrDefault();
+                while (counter!=0)
                 {
-                    sw.WriteLine("{0},Reproduction time END:{1}, Duration(s):{2}, Title:{3}", s.SongID, DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"), s.Duration_s, s.Title);
-                    sw.Close();
-                    MessageBox.Show("Song has finished");
+                    counter -= 1;
+                    Thread.Sleep(1000);
+                }
+                countdown.Signal();
+                //signalin that song is over and writing that to file and showing notification to the user
+                if (countdown.IsSet)
+                {
+                    StreamWriter sw1 = new StreamWriter(path, true);
+                    sw1.WriteLine("{0},Reproduction time END:{1}, Duration(s):{2}, Title:{3}", s.SongID, DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"), s.Duration_s, s.Title);
+                        sw1.Close();
+                        MessageBox.Show("Title: "+" "+s.Title+" \nAuthor:"+s.Author + " " +"\nSong has finished");
+                    countdown.Reset();
                 }
             }
             catch (Exception ex)
@@ -134,12 +150,16 @@ namespace Zadatak_1.ViewModel
             }
 
         }
+        /// <summary>
+        /// Method for deleting
+        /// </summary>
         private void DeleteExecute()
         {
             try
             {
                 tblSong songToDelete = (from r in context.tblSongs where r.SongID == Song.SongID select r).FirstOrDefault();
                 MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure? Song will be deleted", "Delete Confirmation", MessageBoxButton.YesNo);
+                //user confirmation
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     context.tblSongs.Remove(songToDelete);
@@ -177,6 +197,9 @@ namespace Zadatak_1.ViewModel
                 return add;
             }
         }
+        /// <summary>
+        /// Opens window for new song adding
+        /// </summary>
         private void AddExecute()
         {
             try
@@ -219,7 +242,10 @@ namespace Zadatak_1.ViewModel
         {
             return true;
         }
-
+        /// <summary>
+        /// Gets list of the song from database
+        /// </summary>
+        /// <returns></returns>
         private List<tblSong> GetSongs()
         {
             List<tblSong> list = new List<tblSong>();
