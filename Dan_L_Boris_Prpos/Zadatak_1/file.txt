@@ -1,0 +1,17 @@
+5,Reproduction time START:2020-08-05 13:52:18, Duration(s):123, Title:Ladja
+7,Reproduction time START:2020-08-05 13:54:47, Duration(s):10, Title:KratkaPjesma
+7,Reproduction time START:2020-08-05 13:56:49, Duration(s):10, Title:KratkaPjesma
+7,Reproduction time START:2020-08-05 13:56:52, Duration(s):10, Title:KratkaPjesma
+7,Reproduction time START:2020-08-05 13:56:55, Duration(s):10, Title:KratkaPjesma
+7,Reproduction time START:2020-08-05 15:15:30, Duration(s):10, Title:KratkaPjesma
+7,Reproduction time START:2020-08-05 15:16:27, Duration(s):10, Title:KratkaPjesma
+7,Reproduction time END:2020-08-05 15:16:38, Duration(s):10, Title:KratkaPjesma
+8,Reproduction time START:2020-08-05 15:16:56, Duration(s):20, Title:Magija
+8,Reproduction time START:2020-08-05 15:18:15, Duration(s):20, Title:Magija
+8,Reproduction time END:2020-08-05 15:18:36, Duration(s):20, Title:Magija
+9,Reproduction time START:2020-08-05 15:19:20, Duration(s):8, Title:Ime
+9,Reproduction time END:2020-08-05 15:19:29, Duration(s):8, Title:Ime
+9,Reproduction time START:2020-08-05 15:25:17, Duration(s):8, Title:Ime
+9,Reproduction time END:2020-08-05 15:25:28, Duration(s):8, Title:Ime
+10,Reproduction time START:2020-08-05 15:26:41, Duration(s):10, Title:Badr Hari
+10,Reproduction time END:2020-08-05 15:26:53, Duration(s):10, Title:Badr Hari
