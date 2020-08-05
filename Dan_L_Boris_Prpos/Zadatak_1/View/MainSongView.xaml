@@ -7,6 +7,60 @@
         mc:Ignorable="d"
         Title="MainSongView" Height="450" Width="800">
     <Grid>
-        
+        <Grid Height="250"
+              Width="950">
+            <DataGrid Name="DataGridUsers"
+                      ItemsSource="{Binding OrderList, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Order, UpdateSourceTrigger=PropertyChanged}"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      AutoGenerateColumns="False"
+                      HorizontalGridLinesBrush="Black"
+                      BorderBrush="Black"
+                      Foreground="Black"
+                      FontWeight="Bold"
+                      Margin="210,10,425,49">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Title"
+                                        Binding="{Binding Song.Title}" />
+                    <DataGridTextColumn Header="Author"
+                                        Binding="{Binding Song.Author}" />
+                    <DataGridTextColumn Header="Duration"
+                                        Binding="{Binding Song.Duration}" />
+                    
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  Command="{Binding Path=DataContext.Delete, RelativeSource= {RelativeSource FindAncestor,
+                                       AncestorType={x:Type DataGrid}},UpdateSourceTrigger=PropertyChanged}"
+                                         Content="Delete" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  Command="{Binding Path=DataContext.Play, RelativeSource= {RelativeSource FindAncestor,
+                                       AncestorType={x:Type DataGrid}},UpdateSourceTrigger=PropertyChanged}"
+                                         Content="Play" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                   
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Button Content="Add new song"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="100"
+                Margin="240,355,0,0"
+                Command="{Binding Add,UpdateSourceTrigger=PropertyChanged}" />
+        <Button Content="Close"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="100"
+                Margin="415,355,0,0"
+                Command="{Binding Close,UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

@@ -11,13 +11,14 @@ using Zadatak_1.View;
 
 namespace Zadatak_1.ViewModel
 {
-    class MainSongViewModel : ViewModelBase
+    class CreateSongViewModel : ViewModelBase
     {
+        CreateSong createSong;
         Entity context = new Entity();
-        MainSongView mainSongView;
-        public MainSongViewModel(MainSongView mainSongOpen)
+
+        public CreateSongViewModel(CreateSong createSongOpen)
         {
-            mainSongView = mainSongOpen;
+            createSong = createSongOpen;
             Song = new tblSong();
         }
 
@@ -34,25 +35,13 @@ namespace Zadatak_1.ViewModel
                 OnPropertyChanged("Song");
             }
         }
-        private List<tblSong> songList;
-        public List<tblSong> SongList
-        {
-            get
-            {
-                return songList;
-            }
-            set
-            {
-                songList = value;
-                OnPropertyChanged("SongList");
-            }
-        }
+
         private ICommand add;
         public ICommand Add
         {
             get
             {
-                if (add==null)
+                if (add == null)
                 {
                     add = new RelayCommand(param => AddExecute(), param => CanAddExecute());
                 }
@@ -63,8 +52,14 @@ namespace Zadatak_1.ViewModel
         {
             try
             {
-                CreateSong createSong = new CreateSong();
-                createSong.ShowDialog();
+                tblSong newSong = new tblSong();
+                newSong.Title = Song.Title;
+                newSong.Author = Song.Author;
+                newSong.Duration_s = Song.Duration_s;
+                context.tblSongs.Add(newSong);
+                context.SaveChanges();
+                MessageBox.Show("Song is saved in databse");
+                Song = new tblSong();
             }
             catch (Exception ex)
             {
@@ -74,7 +69,14 @@ namespace Zadatak_1.ViewModel
         }
         private bool CanAddExecute()
         {
-            return true;
+            if (String.IsNullOrEmpty(Song.Title) || String.IsNullOrEmpty(Song.Author) || String.IsNullOrEmpty(Song.Duration_s.ToString()) || Song.Duration_s < 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         private ICommand close;
         public ICommand Close
@@ -90,7 +92,7 @@ namespace Zadatak_1.ViewModel
         }
         private void CloseExecute()
         {
-            mainSongView.Close();
+            createSong.Close();
         }
         private bool CanCloseExecute()
         {

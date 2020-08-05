@@ -106,7 +106,14 @@ namespace Zadatak_1.ViewModel
                 tblUser newUser = new tblUser();
                 newUser.Username = Username;
                 newUser.Pasword = Password;
-                if (CheckUsername(Username)==true && PasswordValidation(Password)==true)
+                if (UserExist(Username, Password) == true)
+                {
+
+                    MessageBox.Show("We recognize you! \nWelcome!");
+                    MainSongView mainSong = new MainSongView();
+                    mainSong.ShowDialog();
+                }
+                if (CheckUsername(Username)==true && PasswordValidation(Password)==true && UserExist(Username,Password)==false)
                 {
                     context.tblUsers.Add(newUser);
                     context.SaveChanges();
@@ -114,18 +121,33 @@ namespace Zadatak_1.ViewModel
                     MainSongView mainSong = new MainSongView();
                     mainSong.ShowDialog();
                 }
-                else
+                if(CheckUsername(Username) == true && PasswordValidation(Password) == true)
                 {
                     MessageBox.Show("Username must be unique\nPassword must contain 2 uppercase characters and can't be shorter than 6 characters");
                 }
-
-
+            
+              
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 throw;
             }
+        }
+        private bool UserExist(string user,string pas)
+        {
+            
+            List<tblUser> useList = context.tblUsers.ToList();
+            foreach (tblUser item in useList)
+            {
+                if (item.Username==user && item.Pasword==pas)
+                {
+                    return true;
+                }
+            }
+            return false;
+         
+            
         }
         private bool CanLoginExecute()
         {
